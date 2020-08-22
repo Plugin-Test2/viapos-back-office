@@ -1,1 +1,15 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* You can add global styles to this file, and also import other style files */
+.moduleContainer {
+  border-radius: 15px;
+  #border-style: solid;
+  #border-width: 1px;
+  padding: 10px;
+  background: #FFFAFA;
+}
+
+html {
+  background-color: #e6f2ff;
+}
 /* You can add global styles to this file, and also import other style files */
