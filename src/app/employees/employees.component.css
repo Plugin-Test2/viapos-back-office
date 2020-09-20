@@ -1,0 +1,94 @@
+.employeesContainer {
+  width: calc(65% - 12.5px);
+  margin-left: 25px;
+  display: inline-block;
+  vertical-align: top;
+  height: 46vh;
+  margin-top: 10px;
+}
+
+.employeeTypesContainer {
+  width: calc(30% - 12.5px);
+  margin-left: 25px;
+  display: inline-block;
+  vertical-align: top;
+  height: 46vh;
+  margin-top: 10px;
+}
+
+.sectionsContainer {
+  overflow: scroll;
+  height: calc(46vh - 55px);
+}
+
+div::-webkit-scrollbar {
+  display: none;
+}
+
+.header {
+  display: block;
+}
+
+.header h2 {
+  display: inline-block;
+}
+
+.header button {
+  display: inline-block;
+  float: right;
+}
+
+.pencilImg {
+  height: auto;
+  max-width: 25px;
+  margin: auto;
+}
+
+.pencilCol {
+  width: 30px;
+}
+
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 2; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  border-radius: 15px;
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 1px solid #888;
+  width: 40%; /* Could be more or less, depending on screen size */
+  max-height: 60vh;
+  overflow: scroll;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.hiddenCheckbox {
+  display: none;
+}

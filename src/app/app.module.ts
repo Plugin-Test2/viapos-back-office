@@ -28,6 +28,9 @@ import { LocationsComponent } from './locations/locations.component';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpErrorHandler} from './http-error-handler.service';
 import {MessageService} from './message.service';
+import { EmployeesComponent } from './employees/employees.component';
+import { LoginComponent } from './login/login.component';
+import {AuthGuard} from './auth/auth.guard';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -45,7 +48,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CalendarComponent,
     RoutesComponent,
     RouteSchedulerComponent,
-    LocationsComponent
+    LocationsComponent,
+    EmployeesComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +67,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     HttpErrorHandler,
-    MessageService
+    MessageService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

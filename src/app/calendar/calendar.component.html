@@ -1,0 +1,196 @@
+<div class="leftContainer">
+  <div class="moduleContainer employeesContainer">
+    <h3>Shifts</h3>
+    <div class="list-group">
+      <a href="#" class="list-group-item list-group-item-action" (click)="selectShiftTab('Route')">Route Shifts</a>
+      <div [hidden]="selectedShift != 'Route'" #external>
+        <div *ngFor="let shift of shifts" class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event shift'>
+          <div class='fc-event-main'>{{shift.name}}</div>
+        </div>
+      </div>
+      <a href="#" class="list-group-item list-group-item-action" (click)="selectShiftTab('Staff')">Staff Shifts</a>
+      <div [hidden]="selectedShift != 'Staff'" #external2>
+        <div *ngFor="let shift of shifts" class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event shift'>
+          <div class='fc-event-main'>{{shift.name}}</div>
+        </div>
+      </div>
+      <a href="#" class="list-group-item list-group-item-action" (click)="selectShiftTab('Other')">Other Shifts</a>
+      <div [hidden]="selectedShift != 'Other'" #external3>
+        <div *ngFor="let shift of shifts" class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event shift'>
+          <div class='fc-event-main'>{{shift.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="moduleContainer filterContainer">
+    <h3>Filters</h3>
+    <div class="form-group">
+      <label for="locationFilter">Locations to View</label>
+      <select class="form-control" id="locationFilter" (change)="selectGym($event.target.value)">
+        <option *ngFor="let location of locations" value={{location}}>{{location}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="shiftFilter">Types of Shifts</label>
+      <select class="form-control" id="shiftFilter">
+        <option *ngFor="let shiftType of shiftTypes">{{shiftType}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="moduleContainer calendarContainer">
+  <full-calendar deepChangeDetection="true" [options]="calendarOptions" ></full-calendar>
+</div>
+
+<div  *ngIf="displayModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="titleInput" class="col-sm-2 col-form-label">Title</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="titleInput" placeholder="Title..." [(ngModel)]="selectedEventName" name="titleName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="shiftTypeInput" class="col-sm-2 col-form-label">Shift Type</label>
+        <div class="col-sm-10">
+          <select id="shiftTypeInput" class="form-control" [(ngModel)]="selectedEvent.shiftType" name="shiftType">
+            <option *ngFor="let shiftType of shiftTypes" [value]="shiftType.id">{{shiftType.name}}</option>
+          </select>
+        </div>
+      </div>
+      <fieldset class="form-group" name="reoccurenceForm">
+        <div class="row">
+          <legend class="col-form-label col-sm-4 pt-0">Occurrence</legend>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="none" [(ngModel)]="selectedEvent.reoccurence" >
+            <label class="form-check-label" for="inlineRadio1">None</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="daily" [(ngModel)]="selectedEvent.reoccurence" >
+            <label class="form-check-label" for="inlineRadio2">Daily</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="weekly" [(ngModel)]="selectedEvent.reoccurence" >
+            <label class="form-check-label" for="inlineRadio3">Weekly</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="monthly" [(ngModel)]="selectedEvent.reoccurence" >
+            <label class="form-check-label" for="inlineRadio4">Monthly</label>
+          </div>
+        </div>
+      </fieldset>
+      <div *ngIf="selectedEvent.reoccurence=='weekly'" class="form-group row">
+        <label class="col-form-label col-sm-4 pt-0">Days of Week</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="sundayCheckbox" value="0" [checked]="selectedEvent.daysOfWeek.indexOf('0') > -1" (click)="toggleDay('0')">
+          <label class="form-check-label" for="sundayCheckbox">Su</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="mondayCheckbox" value="1" [checked]="selectedEvent.daysOfWeek.indexOf('1') > -1" (click)="toggleDay('1')">
+          <label class="form-check-label" for="mondayCheckbox">M</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="tuesdayCheckbox" value="2" [checked]="selectedEvent.daysOfWeek.indexOf('2') > -1" (click)="toggleDay('2')">
+          <label class="form-check-label" for="tuesdayCheckbox">Tu</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="wednesdayCheckbox" value="3" [checked]="selectedEvent.daysOfWeek.indexOf('3') > -1" (click)="toggleDay('3')">
+          <label class="form-check-label" for="wednesdayCheckbox">W</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="thursdayCheckbox" value="4" [checked]="selectedEvent.daysOfWeek.indexOf('4') > -1" (click)="toggleDay('4')">
+          <label class="form-check-label" for="thursdayCheckbox">Th</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="fridayCheckbox" value="5" [checked]="selectedEvent.daysOfWeek.indexOf('5') > -1" (click)="toggleDay('5')">
+          <label class="form-check-label" for="fridayCheckbox">F</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="saturdayCheckbox" value="6" [checked]="selectedEvent.daysOfWeek.indexOf('6') > -1" (click)="toggleDay('6')">
+          <label class="form-check-label" for="saturdayCheckbox">Sa</label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-form-label col-sm-2 pt-0">Eligible Employees</label>
+        <div class="col-form-label col-sm-4">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+          <label class="form-check-label" for="inlineCheckbox1">Setters</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+          <label class="form-check-label" for="inlineCheckbox2">General</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+          <label class="form-check-label" for="inlineCheckbox3">Managers</label>
+        </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="row">
+          <label>Require Employees per Shift</label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" aria-label="Checkbox for following text input" [checked]="selectedEvent.minEmployeeNbr">
+              </div>
+            </div>
+            <input type="text" class="form-control" aria-label="Text input with checkbox" [(ngModel)]="selectedEvent.minEmployeeNbr" name="minEmployeeInput">
+          </div>
+          </div>
+          <div class="row">
+            <label>Required Shifts Per Week</label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" aria-label="Checkbox for following text input" [checked]="selectedEvent.minShiftsNbr !== undefined">
+                </div>
+              </div>
+              <input type="text" class="form-control" aria-label="Text input with checkbox" [(ngModel)]="selectedEvent.minShiftsNbr" name="minShiftInput">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="row timePickerContainer">
+      <div class="col-sm-6 timePicker">
+        <p>Start Time</p>
+        <ngb-timepicker [(ngModel)]="startTime" [meridian]="meridian"></ngb-timepicker>
+      </div>
+      <div class="col-sm-6 timePicker">
+        <p>End Time</p>
+        <ngb-timepicker [(ngModel)]="endTime" [meridian]="meridian"></ngb-timepicker>
+      </div>
+    </div>
+    <div class="row timePickerContainer">
+      <div class="col-sm-6 timePicker">
+        <mat-form-field appearance="fill">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startDate" [(ngModel)]="startDateForm">
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 timePicker">
+        <mat-form-field appearance="fill">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="endDate" [(ngModel)]="endDateForm">
+          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+          <mat-datepicker #endDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger mr-auto" (click)="deleteEvent()">Delete</button>
+      <button type="button" class="btn btn-primary" (click)="saveEvent()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>

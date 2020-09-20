@@ -1,0 +1,61 @@
+<div class="rightContainer moduleContainer">
+  <div class="routesHeaderContainer">
+    <h2>Atlanta Routes</h2>
+  </div>
+  <div class="tableContainer">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Section</th>
+      <th scope="col">Route</th>
+      <th scope="col">Expected Grade</th>
+      <th scope="col">Actual Grade</th>
+      <th scope="col">Set By</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let route of routes">
+      <th scope="row">{{route.title}}</th>
+      <td>{{route.id}}</td>
+      <td>5.10</td>
+      <td>5.11</td>
+      <td>Marshall Henderson</td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="leftContainer">
+  <div class="filterDistContainer">
+    <div class="moduleContainer filterContainer">
+      <h2>Active Plans</h2>
+    </div>
+    <div class="moduleContainer distContainer">
+      <h2>Distribution</h2>
+    </div>
+  </div>
+  <div class="filterDistContainer">
+    <div class="moduleContainer filterContainer">
+      <h2>Filter</h2>
+    </div>
+    <div class="moduleContainer distContainer">
+      <h2>Distribution</h2>
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Grade</th>
+          <th scope="col">Expected</th>
+          <th scope="col">Actual</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let dist of routeDistribution">
+          <th scope="row">{{dist.grade}}</th>
+          <td>{{dist.percentage}}%</td>
+          <td>{{dist.effectivePercentage}}%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

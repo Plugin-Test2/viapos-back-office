@@ -1,0 +1,143 @@
+<div class="leftContainer">
+  <div class="moduleContainer employeesContainer">
+    <full-calendar #selectedCalendar [options]="selectedDayCalendar"></full-calendar>
+  </div>
+</div>
+
+<div class="calendarContainer">
+  <div class="moduleContainer">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+  <div class="moduleContainer filterContainer">
+    <div class="header">
+      <h2>Unassigned Shifts</h2>
+      <button class="btn btn-primary" (click)="openModal()">+</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="displayModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <h1>Schedule Unassigned Shifts</h1>
+    </div>
+    <p>Locations to Schedule</p>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-primary">
+        <input class="hiddenCheckbox" type="checkbox">All
+      </label>
+      <label class="btn btn-primary">
+        <input class="hiddenCheckbox" type="checkbox">Atlanta
+      </label>
+      <label class="btn btn-primary">
+        <input class="hiddenCheckbox" type="checkbox">Kennesaw
+      </label>
+      <label class="btn btn-primary">
+        <input class="hiddenCheckbox" type="checkbox">Midtown
+      </label>
+    </div>
+    <p>Shift Types to Schedule</p>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-primary">
+        <input class="hiddenCheckbox" type="checkbox">All
+      </label>
+      <label class="btn btn-primary" *ngFor="let employeeType of employeeTypes">
+        <input class="hiddenCheckbox" type="checkbox">{{ employeeType.name }}
+      </label>
+    </div>
+    <p>Employees to Schedule</p>
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Employees
+            </button>
+          </h5>
+        </div>
+
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-4" *ngFor="let employee of employees">
+                <label class="btn btn-primary"><input type="checkbox"> {{ employee.name }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row timePickerContainer">
+      <div class="col-sm-6 timePicker">
+        <mat-form-field appearance="fill">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startDate" [value]="startDateForm.value">
+          <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+          <mat-datepicker #startDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6 timePicker">
+        <mat-form-field appearance="fill">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="endDate" [value]="endDateForm.value">
+          <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+          <mat-datepicker #endDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="closeModal()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="displayEventModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <h2>{{selectedShiftEvent.title}}</h2>
+    </div>
+    <div>
+      <div class="scheduledEmployeesHeader">
+         <h3>Scheduled Employees</h3>
+        <p>Assigned Shifts: {{shiftEmployees.length}}/{{selectedShiftEvent.minEmployeeNbr}}</p>
+      </div>
+      <div class="list-group">
+        <div class="list-group-item" *ngFor="let employee of shiftEmployees">{{employee.name}} <span class="close" (click)="removeShift(employee)">X</span></div>
+      </div>
+    </div>
+    <div id="shiftEmployees">
+      <div class="card">
+        <div class="card-header" id="shiftHeading">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#shiftCollapse,#searchBar" aria-expanded="true" aria-controls="shiftCollapse">
+              Employees
+            </button>
+          </h5>
+          <input id="searchBar" class="collapse" (keyup)="filterEmployees($event)">
+        </div>
+
+        <div id="shiftCollapse" class="collapse" aria-labelledby="shiftHeading" data-parent="#shiftEmployees">
+          <div class="card-body">
+            <div class="row">Available Employees</div>
+            <div class="row">
+              <div class="col-sm-4" *ngFor="let employee of availableShiftEmployees">
+                <button class="btn btn-primary" (click)="assignEmployeeToShift(employee)"> {{ employee.name }}</button>
+              </div>
+            </div>
+            <div class="row">
+              Other Employees
+            </div>
+            <div class="col-sm-4" *ngFor="let employee of unavailableShiftEmployees">
+              <button class="btn btn-primary" (click)="assignEmployeeToShift(employee)"> {{ employee.name }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="saveShifts()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>

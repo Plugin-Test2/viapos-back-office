@@ -1,0 +1,176 @@
+<div>
+  <div class="moduleContainer employeesContainer">
+    <div class="header">
+      <h2>Employees</h2>
+      <button class="btn btn-primary" (click)="openEmployeeModal()">+</button>
+    </div>
+    <div class="sectionsContainer">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Edit</th>
+          <th scope="col">Name</th>
+          <th scope="col">Employee Type</th>
+          <th scope="col">Weekly Hours Preferred</th>
+          <th scope="col">Occurrence</th>
+          <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let employee of employees">
+          <td class="pencilCol"><img class="pencilImg" src="../../assets/images/icons8-edit-100.png"></td>
+          <th scope="row">{{ employee.name }}</th>
+          <td>{{ employee.type }}</td>
+          <td></td>
+          <td>4 Weeks</td>
+          <td class="pencilCol"><img class="pencilImg" src="../../assets/images/icons8-trash-can-96.png"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="moduleContainer employeeTypesContainer">
+    <div class="header">
+      <h2>Employee Types</h2>
+      <button class="btn btn-primary" (click)="openEmployeeTypeModal()">+</button>
+    </div>
+    <div class="sectionsContainer">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Edit</th>
+          <th scope="col">Name</th>
+          <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let type of employeeTypes">
+          <td class="pencilCol"><img class="pencilImg" src="../../assets/images/icons8-edit-100.png"></td>
+          <th scope="row">{{ type.name }}</th>
+          <td class="pencilCol" (click)="openDeleteModal(type)"><img class="pencilImg" src="../../assets/images/icons8-trash-can-96.png"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="moduleContainer employeeTypesContainer">
+    <div class="header">
+      <h2>Shift Types</h2>
+      <button class="btn btn-primary" (click)="openShiftTypeModal()">+</button>
+    </div>
+    <div class="sectionsContainer">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Edit</th>
+          <th scope="col">Name</th>
+          <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let type of shiftTypes">
+          <td class="pencilCol"><img class="pencilImg" src="../../assets/images/icons8-edit-100.png"></td>
+          <th scope="row">{{ type.name }}</th>
+          <td class="pencilCol" (click)="openDeleteModal(type)"><img class="pencilImg" src="../../assets/images/icons8-trash-can-96.png"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div  *ngIf="displayEmployeeModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="titleInput" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="titleInput" placeholder="Name..." [(ngModel)]="selectedEmployee.name" name="locationName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="shiftTypeInput" class="col-sm-2 col-form-label">Employee Type</label>
+        <div class="col-sm-4">
+          <select class="form-control" id="shiftTypeInput" [(ngModel)]="selectedEmployee.typeId" name="employeeTypeInput">
+            <option *ngFor="let employeeType of employeeTypes" value="{{ employeeType.id }}">{{ employeeType.name }}</option>
+          </select>
+        </div>
+        <label for="gymTypeInput" class="col-sm-2 col-form-label">Type of Gym</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="gymTypeInput" placeholder="Name..." name="locationType">
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="createEmployee()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displayEmployeeTypeModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="titleInput" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="typeName" placeholder="Name..." [(ngModel)]="selectedEmployeeType.name" name="locationName">
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="createType()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displayShiftTypeModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="titleInput" class="col-sm-2 col-form-label">Shift Type Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="shiftTypeName" placeholder="Name..." [(ngModel)]="selectedShiftType.name" name="locationName">
+        </div>
+      </div>
+      Eligible Employees Type
+      <div class="form-group row">
+        <div class="btn-group" data-toggle="buttons">
+          <label *ngFor="let employeeType of employeeTypes" class="btn btn-primary" (click)="toggleEmployeeType(employeeType.id)"><input class="hiddenCheckbox" type="checkbox">{{employeeType.name}}</label>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="createShiftType()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displayDeleteModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <h2>Are you sure you want to delete: {{ selectedEmployeeType.name }}?</h2>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="deleteType()">Delete</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

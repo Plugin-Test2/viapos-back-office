@@ -1,0 +1,186 @@
+<div class="rightContainer moduleContainer">
+  <div class="routesHeaderContainer">
+    <h2>Future Atlanta Routes</h2>
+    <div class="optionsContainer">
+      <button class="btn btn-secondary" type="button" (click)="newSchedule()">
+        +
+      </button>
+    </div>
+  </div>
+  <div class="tableContainer">
+    <table class="table setterTableGroup" cdkDropListGroup>
+      <thead>
+      <tr>
+        <th></th>
+        <th scope="col">Section</th>
+        <th scope="col">Route</th>
+        <th scope="col">Expected Grade</th>
+        <th scope="col">Date to Set</th>
+        <th scope="col">Assigned To</th>
+      </tr>
+      </thead>
+      <tbody *ngFor="let shift of routePlanShifts" cdkDropList (cdkDropListDropped)="onDrop($event)" [cdkDropListData]="settersRoutes[shift]" id="{{shift}}" class="cdk-drop-list setterTable">
+      <tr *ngFor="let route of settersRoutes[shift]" cdkDrag>
+        <th scope="row">
+          <div class="drag-handle" cdkDragHandle>
+            +
+          </div>
+        </th>
+        <td>{{sectionsNames[route.sectionId]}}</td>
+        <td>{{route.number}}</td>
+        <td>{{route.assignedGrade}}</td>
+        <td>{{route.shiftDisplayDate}}</td>
+        <td>{{route.shiftAssignee}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="leftContainer">
+  <div class="moduleContainer sectionsContainer">
+    <h2>Sections</h2>
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col">Section</th>
+        <th scope="col">Number of Routes</th>
+        <th scope="col">Difficulty Weight</th>
+        <th scope="col">Occurrence</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let sectionId of selectedRoutePlan.sections">
+        <th scope="row">{{sectionsNames[sectionId]}}</th>
+        <td></td>
+        <td>Easy</td>
+        <td>4 Weeks</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="filterDistContainer">
+    <div class="moduleContainer filterContainer">
+      <h2>Route Plans</h2>
+        <table class="table">
+          <thead class="thead-light">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Completion</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let routePlan of routePlans">
+            <th scope="row">{{routePlan.name}}</th>
+            <td>15%</td>
+            <td>{{convertFullDateToDisplay(routePlan.startDate)}}</td>
+            <td>{{convertFullDateToDisplay(routePlan.endDate)}}</td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+    <div class="moduleContainer distContainer">
+      <h2>Distribution</h2>
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Grade</th>
+          <th scope="col">Expected</th>
+          <th scope="col">Actual</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let dist of routeDistribution">
+          <th scope="row">{{dist.grade}}</th>
+          <td>{{dist.percentage}}%</td>
+          <td>{{dist.effectivePercentage}}%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="displayModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="exampleFormControlInput1">New Setting Title</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Kennesaw 6/19-7/19" [(ngModel)]="newRoutePlan.name" name="routePlanName">
+        </div>
+        <h3>Locations</h3>
+        <div class="row">
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary" *ngFor="let location of locations" (click)="toggleScheduledLocation(location)"><input class="hiddenCheckbox" type="checkbox">{{location.name}}</label>
+          </div>
+        </div>
+        <h3>Sections</h3>
+        <div class="row" *ngFor="let location of locations">
+          <div *ngIf="isLocationScheduled(location)">
+            <div>
+              {{location.name}}
+            </div>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-secondary" *ngFor="let section of sectionsByLocation[location.id]" (click)="toggleScheduledSection(section.id)"><input class="hiddenCheckbox" type="checkbox">{{section.name}}</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        </div>
+        <h3>Setters</h3>
+        <div class="form-group row">
+          <div class="col-sm-2">
+            <div class="form-check">
+              <label class="btn btn-primary">
+                <input class="hiddenCheckbox" type="checkbox">All
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-10">
+            <div class="form-check form-check-inline" *ngFor="let setter of setters">
+              <label class="btn btn-primary">
+                <input class="hiddenCheckbox" type="checkbox">{{setter.name}}
+              </label>
+            </div>
+          </div>
+        </div>
+        <h3>Shifts to Use</h3>
+        <div class="btn-group" data-toggle="buttons">
+          <label class="btn btn-primary" *ngFor="let shiftType of shiftTypes" (click)="toggleScheduledShiftTypes(shiftType.id)">
+            <input class="hiddenCheckbox" type="checkbox" value="{{shiftType.id}}">{{shiftType.name}}
+          </label>
+        </div>
+        <div class="row timePickerContainer">
+          <div class="col-sm-6 timePicker">
+            <h3>Start Date</h3>
+            <mat-form-field appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startDate" [(ngModel)]="startDateForm" name="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+              <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 timePicker">
+            <h3>End Date</h3>
+            <mat-form-field appearance="fill">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endDate" [(ngModel)]="endDateForm" name="startDate">
+              <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+              <mat-datepicker #endDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="saveRoutePlan()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>

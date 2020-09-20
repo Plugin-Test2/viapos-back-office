@@ -6,7 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { Location } from '../data-objects/location';
+import { Event } from '../data-objects/event';
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
 import {environment} from '../../environments/environment';
 
@@ -19,65 +19,65 @@ const httpOptions = {
 };
 
 @Injectable()
-export class LocationsService {
-  locationsUrl = environment.backendEndpoint + '/v1/locations';  // URL to web api
+export class EventsService {
+  eventsUrl = environment.backendEndpoint + '/v1/events';  // URL to web api
   private handleError: HandleError;
 
   constructor(
     private http: HttpClient,
     httpErrorHandler: HttpErrorHandler) {
-    this.handleError = httpErrorHandler.createHandleError('LocationsService');
+    this.handleError = httpErrorHandler.createHandleError('EventsService');
   }
 
   /** GET heroes from the server */
-  getLocations(): Observable<Location[]> {
-    return this.http.get<Location[]>(this.locationsUrl, httpOptions)
+  getEvents(): Observable<Event[]> {
+    return this.http.get<Event[]>(this.eventsUrl, httpOptions)
       .pipe(
-        catchError(this.handleError('getHeroes', []))
+        catchError(this.handleError('getEvents', []))
       );
   }
 
   /* GET heroes whose name contains search term */
-  searchLocations(term: string): Observable<Location[]> {
+  searchEvents(term: string): Observable<Event[]> {
     term = term.trim();
 
     // Add safe, URL encoded search parameter if there is a search term
     const options = term ?
       { params: new HttpParams().set('name', term) } : {};
 
-    return this.http.get<Location[]>(this.locationsUrl, options)
+    return this.http.get<Event[]>(this.eventsUrl, options)
       .pipe(
-        catchError(this.handleError<Location[]>('searchLocations', []))
+        catchError(this.handleError<Event[]>('searchEvents', []))
       );
   }
 
   //////// Save methods //////////
 
   /** POST: add a new hero to the database */
-  addLocation(locations: Location[]): Observable<Location[]> {
-    return this.http.post<Location[]>(this.locationsUrl, locations, httpOptions)
+  addEvents(events: Event[]): Observable<Event[]> {
+    return this.http.post<Event[]>(this.eventsUrl, events, httpOptions)
       .pipe(
-        catchError(this.handleError('addLocations', locations))
+        catchError(this.handleError('addEvents', events))
       );
   }
 
   /** DELETE: delete the hero from the server */
-  deleteLocation(id: number): Observable<{}> {
-    const url = `${this.locationsUrl}/${id}`; // DELETE api/heroes/42
+  deleteEvent(id: number): Observable<{}> {
+    const url = `${this.eventsUrl}/${id}`; // DELETE api/heroes/42
     return this.http.delete(url, httpOptions)
       .pipe(
-        catchError(this.handleError('deleteHero'))
+        catchError(this.handleError('deleteEvent'))
       );
   }
 
   /** PUT: update the hero on the server. Returns the updated hero upon success. */
-  updateLocation(location: Location): Observable<Location> {
+  updateEvents(events: Event[]): Observable<Event[]> {
     httpOptions.headers =
       httpOptions.headers.set('Authorization', 'my-new-auth-token');
 
-    return this.http.put<Location>(this.locationsUrl, location, httpOptions)
+    return this.http.put<Event[]>(this.eventsUrl, events, httpOptions)
       .pipe(
-        catchError(this.handleError('updateHero', location))
+        catchError(this.handleError('updateEvents', events))
       );
   }
 }

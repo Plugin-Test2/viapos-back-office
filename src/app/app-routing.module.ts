@@ -6,32 +6,50 @@ import {CalendarComponent} from './calendar/calendar.component';
 import {RoutesComponent} from './routes/routes.component';
 import {RouteSchedulerComponent} from './route-scheduler/route-scheduler.component';
 import {LocationsComponent} from './locations/locations.component';
+import {EmployeesComponent} from './employees/employees.component';
+import {LoginComponent} from './login/login.component';
+import {AuthGuard} from './auth/auth.guard';
 
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'scheduling',
-    component: SchedulingComponent
+    component: SchedulingComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'calendar',
-    component: CalendarComponent
+    component: CalendarComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'routes',
-    component: RoutesComponent
+    component: RoutesComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'scheduleRoutes',
-    component: RouteSchedulerComponent
+    component: RouteSchedulerComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'locations',
-    component: LocationsComponent
+    component: LocationsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'employees',
+    component: EmployeesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   }
 ];
 

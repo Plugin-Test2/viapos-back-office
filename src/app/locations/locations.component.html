@@ -1,0 +1,212 @@
+<div>
+  <div class="moduleContainer locationsContainer">
+    <div class="header">
+      <h2>Locations</h2>
+      <button class="btn btn-primary" (click)="openModal(locationString)">+</button>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item list-group-item-action" role="tab" href="#" (click)="displayAllLocations()">{{ allString }}</li>
+      <li *ngFor="let location of locations" class="list-group-item list-group-item-action" role="tab" href="#" (click)="displayLocation(location)">{{ location.name }}</li>
+    </ul>
+  </div>
+  <div class="moduleContainer selectedLocationContainer">
+    <div class="header">
+      <h2>{{selectedLocation.name}} Sections</h2>
+      <button class="btn btn-primary" (click)="openModal(sectionString)">+</button>
+    </div>
+    <div class="sectionsContainer">
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col">Edit</th>
+        <th scope="col">Section</th>
+        <th scope="col">Number of Routes</th>
+        <th scope="col">Difficulty Weight</th>
+        <th scope="col">Occurrence</th>
+        <th scope="col">Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let section of selectedSections">
+        <td class="pencilCol"><img class="pencilImg" src="../../assets/images/icons8-edit-100.png" (click)="editSection(section)"></td>
+        <th scope="row">{{ section.name }}</th>
+        <td>{{ section.nbrRoutes }}</td>
+        <td>{{ section.difficulty }}</td>
+        <td>4 Weeks</td>
+        <td class="pencilCol"><img class="pencilImg" src="../../assets/images/icons8-trash-can-96.png" (click)="openDeleteModal(section)"></td>
+      </tr>
+    </table>
+    </div>
+  </div>
+  <div class="moduleContainer locationsContainer">
+    <div class="header">
+      <h2>{{selectedLocation.name}} Hours of Operation</h2>
+    </div>
+  </div>
+  <div class="moduleContainer distributionContainer">
+    <div class="header">
+      <h2>Distributions</h2>
+      <button class="btn btn-primary" (click)="openModal(distributionString)">+</button>
+    </div>
+    <div class="sectionsContainer">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Edit</th>
+          <th scope="col">Name</th>
+          <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let distribution of distributions">
+          <td class="pencilCol" (click)="editDistribution(distribution)"><img class="pencilImg" src="../../assets/images/icons8-edit-100.png"></td>
+          <td>{{ distribution.name }}</td>
+          <td class="pencilCol" (click)="deleteDistribution(distribution)"><img class="pencilImg" src="../../assets/images/icons8-trash-can-96.png"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="moduleContainer distributionContainer">
+    <div class="header">
+      <h2>Something Else...</h2>
+      <button class="btn btn-primary">+</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displayLocationModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="titleInput" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="titleInput" placeholder="Name..." [(ngModel)]="newLocation.name" name="locationName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="shiftTypeInput" class="col-sm-2 col-form-label">Number of Routes</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="shiftTypeInput" placeholder="Name...">
+        </div>
+        <label for="gymTypeInput" class="col-sm-2 col-form-label">Type of Gym</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="gymTypeInput" placeholder="Name..." [(ngModel)]="newLocation.type" name="locationType">
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="createLocation()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displaySectionModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="sectionNameInput" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="sectionNameInput" placeholder="Name..." [(ngModel)]="selectedSection.name" name="locationName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="sectionRoutesInput" class="col-sm-2 col-form-label">Number of Routes</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="sectionRoutesInput" placeholder="Name..." [(ngModel)]="selectedSection.nbrRoutes" name="numberOfRoutesName">
+        </div>
+        <label for="sectionDifficultyInput" class="col-sm-2 col-form-label">Difficulty</label>
+        <div class="col-sm-4">
+          <select id="sectionDifficultyInput" class="form-control" [(ngModel)]="selectedSection.difficulty" name="difficultyName">
+            <option selected>None</option>
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+        </div>
+        <label for="shiftTypeInput" class="col-sm-2 col-form-label">Location</label>
+        <div class="col-sm-10">
+          <select id="secitonLocationInput" class="form-control" [(ngModel)]="selectedSection.locationId" name="sectionLocationName">
+            <option *ngFor="let location of locations" value="{{location.id}}">{{ location.name }}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateSection()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displayDistributionModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form class="eventForm">
+      <div class="form-group row">
+        <label for="distributionName" class="col-sm-2 col-form-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="distributionName" placeholder="Name..." [(ngModel)]="newDistribution.name" name="distributionName">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="sectionRoutesInput" class="col-sm-2 col-form-label">Locations</label>
+        <div *ngFor="let location of locations" class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="{{ location.name }}box" value="{{ location.id }}">
+          <label class="form-check-label" for="{{ location.name }}box">{{ location.name }}</label>
+        </div>
+      </div>
+    </form>
+    <div>
+      <h3>Desired Distribution</h3>
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">Grade Name</th>
+          <th scope="col">Percentage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let assignment of newDistribution.assignments">
+          <th scope="row" contenteditable="true">{{ assignment.grade }}</th>
+          <td contenteditable="true">{{ assignment.percentage }}%</td>
+        </tr>
+        <tr>
+          <th scope="row" (click)="addAssignment()">+</th>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="updateDistribution()">Save changes</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div  *ngIf="displayDeleteModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="newCompnayModalLabel" aria-hidden="true">
+  <div class="modal-content">
+    <div>
+      <h2>Are you sure you want to delete: {{ selectedSection.name }}?</h2>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="deleteSection()">Delete</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

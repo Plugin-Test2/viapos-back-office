@@ -8,17 +8,21 @@ import { catchError } from 'rxjs/operators';
 
 import { Employee } from '../data-objects/employee';
 import { HttpErrorHandler, HandleError } from '../http-error-handler.service';
+import {EmployeeType} from '../data-objects/employeeType';
+import {environment} from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    Authorization: 'my-auth-token'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type',
   })
 };
 
 @Injectable()
 export class EmployeesService {
-  heroesUrl = 'api/heroes';  // URL to web api
+  employeeUrl = environment.backendEndpoint + '/v1/employees';
+  employeeTypeUrl = this.employeeUrl + '/types';
   private handleError: HandleError;
 
   constructor(
@@ -28,54 +32,92 @@ export class EmployeesService {
   }
 
   /** GET heroes from the server */
-  getHeroes(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.heroesUrl)
+  getEmployees(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(this.employeeUrl, httpOptions)
       .pipe(
-        catchError(this.handleError('getHeroes', []))
+        catchError(this.handleError('getEmployees', []))
       );
   }
 
   /* GET heroes whose name contains search term */
-  searchHeroes(term: string): Observable<Employee[]> {
+  searchEmployees(term: string): Observable<Employee[]> {
     term = term.trim();
 
     // Add safe, URL encoded search parameter if there is a search term
     const options = term ?
       { params: new HttpParams().set('name', term) } : {};
 
-    return this.http.get<Employee[]>(this.heroesUrl, options)
+    return this.http.get<Employee[]>(this.employeeUrl, options)
       .pipe(
-        catchError(this.handleError<Employee[]>('searchHeroes', []))
+        catchError(this.handleError<Employee[]>('searchEmployees', []))
       );
   }
 
   //////// Save methods //////////
 
   /** POST: add a new hero to the database */
-  addHero(hero: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.heroesUrl, hero, httpOptions)
+  addEmployee(employees: Employee[]): Observable<Employee[]> {
+    return this.http.post<Employee[]>(this.employeeUrl, employees, httpOptions)
       .pipe(
-        catchError(this.handleError('addHero', hero))
+        catchError(this.handleError('addEmployee', employees))
       );
   }
 
   /** DELETE: delete the hero from the server */
-  deleteHero(id: number): Observable<{}> {
-    const url = `${this.heroesUrl}/${id}`; // DELETE api/heroes/42
+  deleteEmployee(id: number): Observable<{}> {
+    const url = `${this.employeeUrl}/${id}`; // DELETE api/heroes/42
     return this.http.delete(url, httpOptions)
       .pipe(
-        catchError(this.handleError('deleteHero'))
+        catchError(this.handleError('deleteEmployee'))
       );
   }
 
   /** PUT: update the hero on the server. Returns the updated hero upon success. */
-  updateHero(hero: Employee): Observable<Employee> {
+  updateEmployee(employees: Employee[]): Observable<Employee[]> {
     httpOptions.headers =
       httpOptions.headers.set('Authorization', 'my-new-auth-token');
 
-    return this.http.put<Employee>(this.heroesUrl, hero, httpOptions)
+    return this.http.put<Employee[]>(this.employeeUrl, employees, httpOptions)
       .pipe(
-        catchError(this.handleError('updateHero', hero))
+        catchError(this.handleError('updateEmployee', employees))
+      );
+  }
+
+  /** GET heroes from the server */
+  getEmployeeTypes(): Observable<EmployeeType[]> {
+    return this.http.get<EmployeeType[]>(this.employeeTypeUrl, httpOptions)
+      .pipe(
+        catchError(this.handleError('getEmployeeTypes', []))
+      );
+  }
+
+  //////// Save methods //////////
+
+  /** POST: add a new hero to the database */
+  addEmployeeType(employeeTypes: EmployeeType[]): Observable<EmployeeType[]> {
+    return this.http.post<EmployeeType[]>(this.employeeTypeUrl, employeeTypes, httpOptions)
+      .pipe(
+        catchError(this.handleError('addEmployeeType', employeeTypes))
+      );
+  }
+
+  /** DELETE: delete the hero from the server */
+  deleteEmployeeType(id: number): Observable<{}> {
+    const url = `${this.employeeTypeUrl}/${id}`; // DELETE api/heroes/42
+    return this.http.delete(url, httpOptions)
+      .pipe(
+        catchError(this.handleError('deleteEmployeeType'))
+      );
+  }
+
+  /** PUT: update the hero on the server. Returns the updated hero upon success. */
+  updateEmployeeType(employeeTypes: EmployeeType[]): Observable<EmployeeType[]> {
+    httpOptions.headers =
+      httpOptions.headers.set('Authorization', 'my-new-auth-token');
+
+    return this.http.put<EmployeeType[]>(this.employeeTypeUrl, employeeTypes, httpOptions)
+      .pipe(
+        catchError(this.handleError('updateEmployeeType', employeeTypes))
       );
   }
 }
