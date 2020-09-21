@@ -2,10 +2,17 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { User } from '../data-objects/user';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment'
 import { map } from 'rxjs/operators';
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  })
+};
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -25,7 +32,7 @@ export class AuthService {
   }
 
   login(username, password) {
-    return this.http.post<User>(`${environment.backendEndpoint}/users/login`, { username, password })
+    return this.http.post<User>(`${environment.backendEndpoint}/v1/users/login`, { username, password }, httpOptions)
       .pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
