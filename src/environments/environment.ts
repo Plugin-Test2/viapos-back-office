@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  backendEndpoint: 'http://3.219.242.10:8080'
+  backendEndpoint: 'http://viapos-api-lb-790192954.us-east-1.elb.amazonaws.com:8080'
 };
 
 /*
