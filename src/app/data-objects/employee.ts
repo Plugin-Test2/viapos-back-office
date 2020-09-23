@@ -4,4 +4,5 @@ export class Employee {
   typeId?: string;
   type?: string;
   availability?: string;
+  assignedRoutes?: number;
 }

@@ -29,6 +29,7 @@ export class RouteSchedulerComponent implements OnInit {
   currentSelected = false;
   setters;
   setterNames;
+  setterRouteNums;
   shiftNames;
   settersRoutes;
   routeDistribution;
@@ -36,6 +37,7 @@ export class RouteSchedulerComponent implements OnInit {
   startDateForm;
   endDateForm;
   locations;
+  locationNames;
   routePlanShifts;
   employeeTypes;
   selectedRoutePlan: RoutePlan;
@@ -73,12 +75,16 @@ export class RouteSchedulerComponent implements OnInit {
           } else {
             this.sectionsByLocation[section.locationId] = [section];
           }
-          this.sectionsNames[section.id] = section.name;
+          this.sectionsNames[section.id] = section;
         }
       });
     this.locationsService.getLocations()
       .subscribe(locations => {
         this.locations = locations;
+        this.locationNames = {};
+        for (const location of locations) {
+          this.locationNames[location.id] = location.name;
+        }
       });
     this.shiftsService.getShiftTypes()
       .subscribe(shiftTypes => {
@@ -93,8 +99,9 @@ export class RouteSchedulerComponent implements OnInit {
       .subscribe(routePlans => {
         this.routePlans = routePlans;
         if (routePlans) {
-          this.selectedRoutePlan = routePlans[0];
-          this.populateSettersRoutes();
+          this.selectRoutePlan(routePlans[0]);
+        } else {
+          this.selectRoutePlan({});
         }
       });
   }
@@ -109,12 +116,19 @@ export class RouteSchedulerComponent implements OnInit {
         event.currentIndex);
       for (const route of event.container.data) {
         if (route.shiftId !== event.container.id) {
+          this.setterRouteNums[this.shiftNames[route.shiftId].assignedTo] -= 1;
           route.shiftId = event.container.id;
           route.shiftAssignee = this.setterNames[this.shiftNames[route.shiftId].assignedTo];
           route.shiftDisplayDate = this.convertFullDateToDisplay(this.shiftNames[route.shiftId].start);
+          this.setterRouteNums[this.shiftNames[event.container.id].assignedTo] += 1;
         }
       }
     }
+  }
+
+  selectRoutePlan(routePlan: RoutePlan): void {
+    this.selectedRoutePlan = routePlan;
+    this.populateSettersRoutes();
   }
 
   newSchedule(): void {
@@ -256,8 +270,10 @@ export class RouteSchedulerComponent implements OnInit {
     this.generateShiftNames();
   }
 
+
   generateShiftNames(): void {
     this.shiftNames = [];
+    this.setterRouteNums = {};
     this.shiftsService.searchShifts(Object.keys(this.settersRoutes))
       .subscribe(shifts => {
         for (const shift of shifts) {
@@ -267,6 +283,12 @@ export class RouteSchedulerComponent implements OnInit {
           if (route.shiftId in this.shiftNames) {
             route.shiftAssignee = this.setterNames[this.shiftNames[route.shiftId].assignedTo];
             route.sectionName = this.sections;
+
+            if (this.shiftNames[route.shiftId].assignedTo in this.setterRouteNums) {
+              this.setterRouteNums[this.shiftNames[route.shiftId].assignedTo] += 1;
+            } else {
+              this.setterRouteNums[this.shiftNames[route.shiftId].assignedTo] = 1;
+            }
           }
           if (this.shiftNames[route.shiftId].start) {
             route.shiftDisplayDate = this.convertFullDateToDisplay(this.shiftNames[route.shiftId].start);

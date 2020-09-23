@@ -13,6 +13,7 @@
       <tr>
         <th></th>
         <th scope="col">Section</th>
+        <th scope="col">Location</th>
         <th scope="col">Route</th>
         <th scope="col">Expected Grade</th>
         <th scope="col">Date to Set</th>
@@ -26,7 +27,8 @@
             +
           </div>
         </th>
-        <td>{{sectionsNames[route.sectionId]}}</td>
+        <td>{{sectionsNames[route.sectionId].name}}</td>
+        <td>{{locationNames[sectionsNames[route.sectionId].locationId]}}</td>
         <td>{{route.number}}</td>
         <td>{{route.assignedGrade}}</td>
         <td>{{route.shiftDisplayDate}}</td>
@@ -37,48 +39,27 @@
   </div>
 </div>
 <div class="leftContainer">
-  <div class="moduleContainer sectionsContainer">
-    <h2>Sections</h2>
-    <table class="table">
-      <thead class="thead-light">
-      <tr>
-        <th scope="col">Section</th>
-        <th scope="col">Number of Routes</th>
-        <th scope="col">Difficulty Weight</th>
-        <th scope="col">Occurrence</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let sectionId of selectedRoutePlan.sections">
-        <th scope="row">{{sectionsNames[sectionId]}}</th>
-        <td></td>
-        <td>Easy</td>
-        <td>4 Weeks</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
   <div class="filterDistContainer">
     <div class="moduleContainer filterContainer">
       <h2>Route Plans</h2>
-        <table class="table">
-          <thead class="thead-light">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Completion</th>
-            <th scope="col">Start Date</th>
-            <th scope="col">End Date</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let routePlan of routePlans">
-            <th scope="row">{{routePlan.name}}</th>
-            <td>15%</td>
-            <td>{{convertFullDateToDisplay(routePlan.startDate)}}</td>
-            <td>{{convertFullDateToDisplay(routePlan.endDate)}}</td>
-          </tr>
-          </tbody>
-        </table>
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Completion</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let routePlan of routePlans">
+          <th scope="row" (click)="selectRoutePlan(routePlan)">{{routePlan.name}}</th>
+          <td>15%</td>
+          <td>{{convertFullDateToDisplay(routePlan.startDate)}}</td>
+          <td>{{convertFullDateToDisplay(routePlan.endDate)}}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
     <div class="moduleContainer distContainer">
       <h2>Distribution</h2>
@@ -95,6 +76,46 @@
           <th scope="row">{{dist.grade}}</th>
           <td>{{dist.percentage}}%</td>
           <td>{{dist.effectivePercentage}}%</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="filterDistContainer">
+  <div class="moduleContainer sectionsContainer">
+    <h2>Sections</h2>
+    <table class="table">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col">Section</th>
+        <th scope="col">Number of Routes</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="selectedRoutePlan">
+      <tr *ngFor="let sectionId of selectedRoutePlan.sections">
+        <th scope="row">{{sectionsNames[sectionId].name}}</th>
+        <td>{{sectionsNames[sectionId].nbrRoutes}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+    <div class="moduleContainer settersContainer">
+      <h2>Setters</h2>
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Routes Assigned</th>
+          <th scope="col">Shifts Assigned</th>
+          <th scope="col">Expected Hours</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let setter of setters">
+          <th scope="row">{{setter.name}}</th>
+          <td *ngIf="setterRouteNums">{{setterRouteNums[setter.id]}}</td>
+          <td>Easy</td>
+          <td>4 Weeks</td>
         </tr>
         </tbody>
       </table>

@@ -42,6 +42,18 @@ div::-webkit-scrollbar {
 .sectionsContainer {
   height: 45vh;
   overflow: scroll;
+  width: 49.5%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.settersContainer {
+  height: 45vh;
+  overflow: scroll;
+  width: 49.5%;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1%;
 }
 
 .filterContainer {
