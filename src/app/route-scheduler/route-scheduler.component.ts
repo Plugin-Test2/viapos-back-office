@@ -60,7 +60,6 @@ export class RouteSchedulerComponent implements OnInit {
     // this.routes = mockRoutes;
     // this.routeDistribution = mockRouteDistribution;
     // this.populateSettersRoutes();
-    // this.setters = Object.keys(this.settersRoutes);
   }
 
   refreshData(): void {
