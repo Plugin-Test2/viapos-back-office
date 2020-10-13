@@ -49,7 +49,7 @@ export class LocationsComponent implements OnInit {
       this.selectedSections = this.sections;
     } else {
       for (const section of this.sections) {
-        if (section.locationName === location.name) {
+        if (section.locationId === location.id) {
           this.selectedSections.push(section);
         }
       }
@@ -89,9 +89,9 @@ export class LocationsComponent implements OnInit {
       this.displaySectionModal = true;
       this.selectedSection = new Section();
       this.selectedSection.difficulty = 'None';
-      if (this.selectedLocation !== undefined) {
-        this.selectedSection.locationName = this.selectedLocation;
-      }
+      // if (this.selectedLocation !== undefined) {
+      //   this.selectedSection.locationName = this.selectedLocation;
+      // }
     } else if (type === this.distributionString) {
       this.displayDistributionModal = true;
       this.newDistribution = new Distribution();

@@ -92,10 +92,12 @@
       </tr>
       </thead>
       <tbody *ngIf="selectedRoutePlan">
-      <tr *ngFor="let sectionId of selectedRoutePlan.sections">
+      <ng-container *ngFor="let sectionId of selectedRoutePlan.sections">
+      <tr *ngIf="sectionsNames[sectionId]">
         <th scope="row">{{sectionsNames[sectionId].name}}</th>
         <td>{{sectionsNames[sectionId].nbrRoutes}}</td>
       </tr>
+      </ng-container>
       </tbody>
     </table>
   </div>
@@ -111,12 +113,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let setter of setters">
+        <ng-container *ngFor="let setter of setters">
+        <tr *ngIf="setterRouteNums && setterRouteNums[setter.id]">
           <th scope="row">{{setter.name}}</th>
-          <td *ngIf="setterRouteNums">{{setterRouteNums[setter.id]}}</td>
+          <td>{{setterRouteNums[setter.id]}}</td>
           <td>Easy</td>
           <td>4 Weeks</td>
         </tr>
+        </ng-container>
         </tbody>
       </table>
     </div>
