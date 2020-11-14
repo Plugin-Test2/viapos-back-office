@@ -1,10 +1,10 @@
 .calendarContainer {
-  width: 67.5%;
+  width: 97.5%;
   height: calc(100vh - 70px);
   margin-top: 10px;
   display: inline-block;
   vertical-align: top;
-  margin-left: 2.5%;
+  margin-left: 1.25%;
   overflow: scroll;
 }
 

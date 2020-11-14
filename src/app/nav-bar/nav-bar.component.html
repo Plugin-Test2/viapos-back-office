@@ -6,11 +6,14 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/scheduling">Scheduling<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/calendar">Calendar</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="schedulingDropdown"  [routerLink]="" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Scheduling
+        </a>
+        <div class="dropdown-menu" aria-labelledby="schedulingDropdown">
+          <a class="dropdown-item" href="/scheduling">Schedule Employees</a>
+          <a class="dropdown-item" href="/calendar">Create Shifts</a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/employees">Employees</a>

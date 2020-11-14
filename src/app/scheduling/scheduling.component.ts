@@ -121,6 +121,8 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
   employees;
   employeesMap = {};
   employeeTypes;
+  shiftTypes;
+  shiftFilters;
 
   constructor(private eventsService: EventsService, private locationsService: LocationsService, private shiftsService: ShiftsService, private employeesService: EmployeesService) {
   }
@@ -141,6 +143,10 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
     this.employeesService.getEmployeeTypes()
       .subscribe(employeeTypes => {
         this.employeeTypes = employeeTypes;
+      });
+    this.shiftsService.getShiftTypes()
+      .subscribe(shiftTypes => {
+        this.shiftTypes = shiftTypes;
       });
   }
 
@@ -392,6 +398,19 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
       }
     }
     this.closeModal();
+  }
+
+  toggleFilter(shift: string): void {
+    if (this.shiftFilters) {
+      const index = this.shiftFilters.indexOf(shift, 0);
+      if (index > -1) {
+        this.shiftFilters.splice(index, 1);
+      } else {
+        this.shiftFilters.push(shift);
+      }
+    } else {
+      this.shiftFilters = [shift];
+    }
   }
 
   createShift(shift: any, eventId: string, eventName: string, employeeId: string): Shift {

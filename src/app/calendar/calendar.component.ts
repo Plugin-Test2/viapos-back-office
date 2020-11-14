@@ -59,9 +59,20 @@ export class CalendarComponent implements AfterViewInit, OnInit {
         buttonText: '1 day'
       }
     },
+    customButtons: {
+      settings: {
+        icon: 'cog',
+        text: 'Settings',
+        click: this.openSettings()
+      },
+      new: {
+        text: 'New',
+        click: this.newEvent()
+      }
+    },
     headerToolbar: {
-      start: 'title', // will normally be on the left. if RTL, will be on the right
-      center: '',
+      start: 'settings new', // will normally be on the left. if RTL, will be on the right
+      center: 'title',
       end: 'today resourceTimeGridDay,resourceTimeGridFourDay,resourceTimeGridWeek prev,next' // will normally be on the right. if RTL, will be on the left
     }
   };
@@ -332,6 +343,14 @@ export class CalendarComponent implements AfterViewInit, OnInit {
       }
     }
     this.startTime = { hour: Number(startTimes[0]), minute: Number(startTimes[1]), second: 0o0};
+  }
+
+  openSettings(): any {
+
+  }
+
+  newEvent(): any {
+
   }
 
   getTimeDifference(originalDate: string): any {

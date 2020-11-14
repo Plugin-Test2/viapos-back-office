@@ -33,7 +33,7 @@
 }
 
 .header h2 {
-  display: inline-block;
+  text-align: center;
 }
 
 .header button {
