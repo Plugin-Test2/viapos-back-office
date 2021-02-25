@@ -29,9 +29,9 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
 
   calendarOptions: CalendarOptions = {
     headerToolbar: {
-      left: 'today prev,next',
+      left: 'prev,next',
       center: 'title',
-      right: 'resourceTimelineWeek,dayGridMonth'
+      right: ''
     },
     initialView: 'dayGridMonth',
     editable: true,
@@ -72,7 +72,7 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
 
   selectedDayCalendar: CalendarOptions = {
     headerToolbar: {
-      left: '',
+      left: 'new',
       center: 'title',
       right: ''
     },
@@ -99,7 +99,13 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
         buttonText: 'Week',
         slotDuration: '02:00'
       },
-    }
+    },
+    customButtons: {
+      new: {
+        text: 'New Shift',
+        click: this.newEvent.bind(this)
+      }
+    },
   };
   selectedShift;
   selectedShifts;
@@ -398,6 +404,10 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
       }
     }
     this.closeModal();
+  }
+
+  newEvent(): any {
+    return false;
   }
 
   toggleFilter(shift: string): void {

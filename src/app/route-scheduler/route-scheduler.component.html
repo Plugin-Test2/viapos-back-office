@@ -40,7 +40,7 @@
 </div>
 <div class="leftContainer">
   <div class="filterDistContainer">
-    <div class="moduleContainer filterContainer">
+    <div class="moduleContainer infoContainer">
       <h2>Route Plans</h2>
       <table class="table">
         <thead class="thead-light">
@@ -61,7 +61,7 @@
         </tbody>
       </table>
     </div>
-    <div class="moduleContainer distContainer">
+    <div class="moduleContainer infoContainer">
       <h2>Distribution</h2>
       <table class="table">
         <thead class="thead-light">
@@ -80,28 +80,7 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <div class="filterDistContainer">
-  <div class="moduleContainer sectionsContainer">
-    <h2>Sections</h2>
-    <table class="table">
-      <thead class="thead-light">
-      <tr>
-        <th scope="col">Section</th>
-        <th scope="col">Number of Routes</th>
-      </tr>
-      </thead>
-      <tbody *ngIf="selectedRoutePlan">
-      <ng-container *ngFor="let sectionId of selectedRoutePlan.sections">
-      <tr *ngIf="sectionsNames[sectionId]">
-        <th scope="row">{{sectionsNames[sectionId].name}}</th>
-        <td>{{sectionsNames[sectionId].nbrRoutes}}</td>
-      </tr>
-      </ng-container>
-      </tbody>
-    </table>
-  </div>
-    <div class="moduleContainer settersContainer">
+    <div class="moduleContainer infoContainer">
       <h2>Setters</h2>
       <table class="table">
         <thead class="thead-light">
@@ -114,45 +93,107 @@
         </thead>
         <tbody>
         <ng-container *ngFor="let setter of setters">
-        <tr *ngIf="setterRouteNums && setterRouteNums[setter.id]">
-          <th scope="row">{{setter.name}}</th>
-          <td>{{setterRouteNums[setter.id]}}</td>
-          <td>Easy</td>
-          <td>4 Weeks</td>
-        </tr>
+          <tr *ngIf="setterRouteNums && setterRouteNums[setter.id]">
+            <th scope="row">{{setter.name}}</th>
+            <td>{{setterRouteNums[setter.id]}}</td>
+            <td>Easy</td>
+            <td>4 Weeks</td>
+          </tr>
         </ng-container>
         </tbody>
       </table>
     </div>
   </div>
+<!--  <div class="filterDistContainer">-->
+<!--  <div class="moduleContainer sectionsContainer">-->
+<!--    <h2>Sections</h2>-->
+<!--    <table class="table">-->
+<!--      <thead class="thead-light">-->
+<!--      <tr>-->
+<!--        <th scope="col">Section</th>-->
+<!--        <th scope="col">Number of Routes</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody *ngIf="selectedRoutePlan">-->
+<!--      <ng-container *ngFor="let sectionId of selectedRoutePlan.sections">-->
+<!--      <tr *ngIf="sectionsNames[sectionId]">-->
+<!--        <th scope="row">{{sectionsNames[sectionId].name}}</th>-->
+<!--        <td>{{sectionsNames[sectionId].nbrRoutes}}</td>-->
+<!--      </tr>-->
+<!--      </ng-container>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
+<!--    <div class="moduleContainer settersContainer">-->
+<!--      <h2>Setters</h2>-->
+<!--      <table class="table">-->
+<!--        <thead class="thead-light">-->
+<!--        <tr>-->
+<!--          <th scope="col">Name</th>-->
+<!--          <th scope="col">Routes Assigned</th>-->
+<!--          <th scope="col">Shifts Assigned</th>-->
+<!--          <th scope="col">Expected Hours</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <ng-container *ngFor="let setter of setters">-->
+<!--        <tr *ngIf="setterRouteNums && setterRouteNums[setter.id]">-->
+<!--          <th scope="row">{{setter.name}}</th>-->
+<!--          <td>{{setterRouteNums[setter.id]}}</td>-->
+<!--          <td>Easy</td>-->
+<!--          <td>4 Weeks</td>-->
+<!--        </tr>-->
+<!--        </ng-container>-->
+<!--        </tbody>-->
+<!--      </table>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>
 <div *ngIf="displayModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-content">
-    <div>
+    <div class="modal-title">
+      <div class="header-title">
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Kennesaw 6/19-7/19" [(ngModel)]="newRoutePlan.name" name="routePlanName">
+      </div>
       <button type="button" class="close" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
       <form>
-        <div class="form-group">
-          <label for="exampleFormControlInput1">New Setting Title</label>
-          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Kennesaw 6/19-7/19" [(ngModel)]="newRoutePlan.name" name="routePlanName">
-        </div>
-        <h3>Locations</h3>
-        <div class="row">
-          <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary" *ngFor="let location of locations" (click)="toggleScheduledLocation(location)"><input class="hiddenCheckbox" type="checkbox">{{location.name}}</label>
-          </div>
-        </div>
+<!--        <h3>Locations</h3>-->
+<!--        <div class="row">-->
+<!--          <div class="btn-group" data-toggle="buttons">-->
+<!--            <label class="btn btn-primary" *ngFor="let location of locations" (click)="toggleScheduledLocation(location)"><input class="hiddenCheckbox" type="checkbox">{{location.name}}</label>-->
+<!--          </div>-->
+<!--        </div>-->
         <h3>Sections</h3>
-        <div class="row" *ngFor="let location of locations">
-          <div *ngIf="isLocationScheduled(location)">
-            <div>
-              {{location.name}}
+<!--        <div class="row" *ngFor="let location of locations">-->
+<!--          <div *ngIf="isLocationScheduled(location)">-->
+<!--            <div>-->
+<!--              {{location.name}}-->
+<!--            </div>-->
+<!--            <div class="btn-group" data-toggle="buttons">-->
+<!--              <label class="btn btn-secondary" *ngFor="let section of sectionsByLocation[location.id]" (click)="toggleScheduledSection(section.id)"><input class="hiddenCheckbox" type="checkbox">{{section.name}}</label>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div id="sections">
+          <div *ngFor="let location of locations" class="card">
+            <div class="card-header" id="shiftHeading">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#'+location.id" aria-expanded="true" aria-controls="test">
+                  {{location.name}}
+                </button>
+              </h5>
             </div>
-            <div class="btn-group" data-toggle="buttons">
-              <label class="btn btn-secondary" *ngFor="let section of sectionsByLocation[location.id]" (click)="toggleScheduledSection(section.id)"><input class="hiddenCheckbox" type="checkbox">{{section.name}}</label>
+
+            <div id="{{location.id}}" class="collapse" aria-labelledby="test" data-parent="#sections">
+              <div class="card-body">
+                <div class="row">{{location.name}} Sections</div>
+                <div class="row">
+                </div>
+              </div>
             </div>
           </div>
         </div>

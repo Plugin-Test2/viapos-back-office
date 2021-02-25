@@ -3,7 +3,6 @@
   margin-left: 1%;
   display: inline-block;
   vertical-align: top;
-  margin-top: 10px;
 }
 
 .routesHeaderContainer {
@@ -35,16 +34,13 @@ div::-webkit-scrollbar {
   display: none;
 }
 
-.filterDistContainer {
-  margin-top: 10px;
-}
-
-.sectionsContainer {
-  height: 45vh;
+.infoContainer {
+  height: 30vh;
   overflow: scroll;
-  width: 49.5%;
+  width: 100%;
   display: inline-block;
   vertical-align: top;
+  margin-top: 10px;
 }
 
 .settersContainer {

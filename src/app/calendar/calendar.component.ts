@@ -63,11 +63,11 @@ export class CalendarComponent implements AfterViewInit, OnInit {
       settings: {
         icon: 'cog',
         text: 'Settings',
-        click: this.openSettings()
+        click: this.openSettings.bind(this)
       },
       new: {
         text: 'New',
-        click: this.newEvent()
+        click: this.newEvent.bind(this)
       }
     },
     headerToolbar: {
@@ -102,14 +102,14 @@ export class CalendarComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.potentialResources = this.calendarOptions.resources;
 
-    new Draggable(this.external.nativeElement, {
-      itemSelector: '.fc-event',
-      eventData(eventEl) {
-        return {
-          title: eventEl.innerText
-        };
-      }
-    });
+    // new Draggable(this.external.nativeElement, {
+    //   itemSelector: '.fc-event',
+    //   eventData(eventEl) {
+    //     return {
+    //       title: eventEl.innerText
+    //     };
+    //   }
+    // });
   }
 
   getLocations(): void {
@@ -165,7 +165,6 @@ export class CalendarComponent implements AfterViewInit, OnInit {
 
   editEvent(info: any): any {
     this.setTimes(info.event);
-    console.log(info.event);
     this.displayModal = true;
     this.selectedEvent = info.event;
     this.selectedEventName = this.selectedEvent.title;
@@ -350,7 +349,9 @@ export class CalendarComponent implements AfterViewInit, OnInit {
   }
 
   newEvent(): any {
-
+    this.displayModal = true;
+    this.selectedEvent = {};
+    return false;
   }
 
   getTimeDifference(originalDate: string): any {

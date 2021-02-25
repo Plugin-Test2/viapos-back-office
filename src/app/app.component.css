@@ -1,3 +1,75 @@
 body {
   background-color: #e6f2ff;
 }
+
+.modal-title {
+  background-color: #133d34;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.modal-title input {
+  background-color: #133d34;
+  outline: 0;
+  border-width: 0 0 3px;
+  color: white;
+}
+
+.modal-title input:focus {
+  background-color: #133d34;
+}
+
+.modal-body {
+  #background-color: #90BCB2;
+}
+
+.modal {
+  display: block; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 2; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  border-radius: 15px;
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 0;
+  border: 1px solid #888;
+  min-width: 750px;
+  width: 40%; /* Could be more or less, depending on screen size */
+  min-height: 40vh;
+  max-height: 90vh;
+}
+
+.header-title {
+  display: inline-block;
+  width: 90%;
+  margin-left: 15px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 15px;
+  display: inline-block;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

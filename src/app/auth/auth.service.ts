@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { User } from '../data-objects/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../environments/environment'
+import {environment} from '../../environments/environment';
 import { map } from 'rxjs/operators';
 
 const httpOptions = {
