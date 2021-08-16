@@ -7,6 +7,9 @@ import {Distribution} from '../data-objects/distribution';
 import {DistributionService} from '../services/distribution.service';
 import {Assignment} from '../data-objects/assignment';
 
+import Amplify, { Auth } from 'aws-amplify';
+import * as AwsConfig from '../config/aws-config';
+
 @Component({
   selector: 'app-locations',
   templateUrl: './locations.component.html',
@@ -40,6 +43,7 @@ export class LocationsComponent implements OnInit {
     this.loadData();
     this.closeModal();
     this.displayLocation( {name: this.allString, id: ''});
+    Amplify.configure(AwsConfig);
   }
 
   displayLocation(location: Location): any {

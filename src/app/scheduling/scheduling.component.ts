@@ -129,6 +129,8 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
   employeeTypes;
   shiftTypes;
   shiftFilters;
+  selectedLocations;
+  allLocations;
 
   constructor(private eventsService: EventsService, private locationsService: LocationsService, private shiftsService: ShiftsService, private employeesService: EmployeesService) {
   }
@@ -219,6 +221,15 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
   getLocations(): void {
     this.locationsService.getLocations()
       .subscribe(locations => {
+        this.selectedLocations = locations.map(x => x.name);
+        this.selectedDayCalendar.resources = this.mapLocationToResource(locations);
+        this.allLocations = locations;
+      });
+  }
+
+  setLocations(): void {
+    this.locationsService.getLocations()
+      .subscribe(locations => {
         this.selectedDayCalendar.resources = this.mapLocationToResource(locations);
       });
   }
@@ -226,34 +237,13 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
   mapLocationToResource(locations: Location[]): Location[] {
     this.locations = [];
     for (const location of locations) {
-      if (location.name) {
+      const index = this.selectedLocations.indexOf(location.name, 0);
+      if (index > -1) {
         location.title = location.name;
-      }
-      this.locations.push(location.id);
-    }
-    return locations;
-  }
-
-  overlayScheduledShifts(): void {
-    const events = [];
-    for (const shift of this.scheduledShifts) {
-      if (shift.resourceId === '1') {
-        shift.resourceId = 'Atlanta-' + shift.title;
-        shift.display = 'background';
-        events.push(shift);
-      } else if (shift.resourceId === '2') {
-        shift.resourceId = 'Kennesaw-' + shift.title;
-        shift.display = 'background';
-        events.push(shift);
-      } else if (shift.resourceId === '3') {
-        shift.resourceId = 'Midtown-' + shift.title;
-        shift.display = 'background';
-        events.push(shift);
+        this.locations.push(location);
       }
     }
-    console.log(events);
-    this.calendarOptions.events = events;
-    // do something
+    return this.locations;
   }
 
   mapToCalendar(events: any[]): any[] {
@@ -410,7 +400,7 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  toggleFilter(shift: string): void {
+  toggleShiftFilter(shift: string): void {
     if (this.shiftFilters) {
       const index = this.shiftFilters.indexOf(shift, 0);
       if (index > -1) {
@@ -421,6 +411,16 @@ export class SchedulingComponent implements OnInit, AfterViewInit {
     } else {
       this.shiftFilters = [shift];
     }
+  }
+
+  toggleLocationFilter(locationName: string): void {
+    const index = this.selectedLocations.indexOf(locationName, 0);
+    if (index > -1) {
+      this.selectedLocations.splice(index, 1);
+    } else {
+      this.selectedLocations.push(locationName);
+    }
+    this.setLocations();
   }
 
   createShift(shift: any, eventId: string, eventName: string, employeeId: string): Shift {

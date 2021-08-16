@@ -4,7 +4,16 @@
 
 export const environment = {
   production: false,
-  backendEndpoint: 'http://viapos-api-lb-790192954.us-east-1.elb.amazonaws.com:8080'
+  backendEndpoint: 'http://viapos-api-lb-790192954.us-east-1.elb.amazonaws.com:8080',
+
+  // AWS Variables
+  region: 'us-east-1',
+  identityPoolId: 'us-east-1:304178435682',
+  userPoolId: 'us-east-1_uKc7XWNcS',
+  clientId: '2send7o4hh4krudqimi3ole82n',
+  cognito_idp_endpoint: '',
+  cognito_identity_endpoint: '',
+  sts_endpoint: ''
 };
 
 /*

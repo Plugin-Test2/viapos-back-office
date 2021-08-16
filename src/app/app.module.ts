@@ -31,6 +31,15 @@ import {MessageService} from './message.service';
 import { EmployeesComponent } from './employees/employees.component';
 import { LoginComponent } from './login/login.component';
 import {AuthGuard} from './auth/auth.guard';
+import {AmplifyUIAngularModule} from '@aws-amplify/ui-angular';
+import {LoginService} from './services/login.service';
+import {CognitoUtil} from './services/cognito.service';
+import {AwsUtil} from './services/aws.service';
+
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+Amplify.configure(awsconfig);
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -62,13 +71,17 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ReactiveFormsModule,
     BrowserAnimationsModule,
     DemoMaterialModule,
-    HttpClientModule
+    HttpClientModule,
+    AmplifyUIAngularModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     HttpErrorHandler,
     MessageService,
-    AuthGuard
+    AuthGuard,
+    LoginService,
+    CognitoUtil,
+    AwsUtil
   ],
   bootstrap: [AppComponent]
 })

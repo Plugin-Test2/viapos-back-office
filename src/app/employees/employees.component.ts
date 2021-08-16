@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {EmployeesService} from '../services/employees.service';
 import {EmployeeType} from '../data-objects/employeeType';
 import {ShiftsService} from '../services/shifts.service';
+import {Employee} from '../data-objects/employee';
 
 @Component({
   selector: 'app-employees',
@@ -47,14 +48,23 @@ export class EmployeesComponent implements OnInit {
       });
   }
 
-  createEmployee(): void {
+  saveEmployee(): void {
     const employees = [this.selectedEmployee];
-    this.employeesService
-      .addEmployee(employees)
-      .subscribe(location => {
-        this.retrieveData();
-        this.closeModal();
-      });
+    if (this.selectedEmployee.id) {
+      this.employeesService
+        .updateEmployee(employees)
+        .subscribe(location => {
+          this.retrieveData();
+          this.closeModal();
+        });
+    } else {
+      this.employeesService
+        .addEmployee(employees)
+        .subscribe(location => {
+          this.retrieveData();
+          this.closeModal();
+        });
+    }
   }
 
   createType(): void {
@@ -102,6 +112,11 @@ export class EmployeesComponent implements OnInit {
   openEmployeeModal(): void {
     this.displayEmployeeModal = true;
     this.selectedEmployee = {};
+  }
+
+  editEmployee(employee: Employee): void {
+    this.displayEmployeeModal = true;
+    this.selectedEmployee = employee;
   }
 
   openEmployeeTypeModal(): void {

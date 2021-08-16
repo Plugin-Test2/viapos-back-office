@@ -1,5 +1,24 @@
 .loginBox {
   width: 500px;
   margin: auto;
-  margin-top: 25vh;
+  margin-top: 5vh;
+}
+
+.card-header img {
+  width: 300px;
+  height: auto;
+  margin-left: 80px;
+}
+
+.line {
+  background:#fff;
+  padding:0 10px;
+}
+
+.line-text {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #e7e7e9;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
 }

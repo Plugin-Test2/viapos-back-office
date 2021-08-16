@@ -8,6 +8,9 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
+import {LoginService} from '../services/login.service';
+import {CognitoUtil} from '../services/cognito.service';
+import {AwsUtil} from '../services/aws.service';
 
 export class AuthGuard implements CanActivate {
   constructor(
@@ -15,15 +18,31 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const user = this.authService.userValue;
-    if (user) {
-      // authorised so return true
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    // return this.loginService.isAuthenticated()
+    //   .then(authenticated => {
+    //     if (authenticated) {
+    //       return true;
+    //     } else {
+    //       localStorage.setItem('auth_redirect_url', state.url);
+    //       this.router.navigate(['/login']);
+    //       return false;
+    //     }
+    //   });
+    return this.authService.isLoggedIn().then(data => {
       return true;
-    }
+    }).catch(err => {
+      this.router.navigate(['/login']);
+      return false;
+    });
+  }
 
-    // not logged in so redirect to login page with the return url
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
-    return false;
+  isLoggedIn(message: string, isLoggedIn: boolean) {
+    console.log('AppComponent: the user is authenticated: ' + isLoggedIn);
+    if (isLoggedIn) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -182,6 +182,11 @@ export class CalendarComponent implements AfterViewInit, OnInit {
     if (this.selectedEvent.daysOfWeek === undefined) {
       this.selectedEvent.daysOfWeek = [];
     }
+    if (this.selectedEvent._def && this.selectedEvent._def.resourceIds) {
+      this.selectedEvent.locationId = this.selectedEvent._def.resourceIds[0];
+    }
+    console.log(this.selectedEvent);
+    console.log(this.shiftTypes);
     return false;
   }
 
@@ -259,9 +264,10 @@ export class CalendarComponent implements AfterViewInit, OnInit {
     if (this.selectedEvent.id) {
       newEvent.id = this.selectedEvent.id;
     }
-    if (this.selectedEvent._def.resourceIds) {
-      newEvent.locationId = this.selectedEvent._def.resourceIds[0];
-    }
+    // if (this.selectedEvent._def.resourceIds) {
+    //   newEvent.locationId = this.selectedEvent._def.resourceIds[0];
+    // }
+    newEvent.locationId = this.selectedEvent.locationId;
     if (this.selectedEvent.reoccurence) {
       newEvent.reoccurence = this.selectedEvent.reoccurence;
       newEvent.daysOfWeek = this.selectedEvent.daysOfWeek;
@@ -351,6 +357,7 @@ export class CalendarComponent implements AfterViewInit, OnInit {
   newEvent(): any {
     this.displayModal = true;
     this.selectedEvent = {};
+    this.selectedEvent.daysOfWeek = [];
     return false;
   }
 
