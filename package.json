@@ -36,6 +36,7 @@
     "aws-sdk": "^2.958.0",
     "boostrap": "^2.0.0",
     "bootstrap": "^4.5.0",
+    "chalk": "^5.0.0",
     "date-fns": "^2.14.0",
     "jquery": "^3.5.1",
     "lodash": "^4.17.21",
